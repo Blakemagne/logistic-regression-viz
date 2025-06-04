@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Furniture Retail Analytics - Easy Metrics</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            -webkit-overflow-scrolling: touch;
+            -webkit-text-size-adjust: 100%;
+            -webkit-font-smoothing: antialiased;
+            touch-action: manipulation;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .scenario-selector {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .scenario-btn {
+            padding: 8px 16px;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .scenario-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .scenario-btn:hover {
+            border-color: #667eea;
+        }
+        
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .chart-section {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chart-container {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+        
+        #logisticChart {
+            display: block;
+            margin: 0 auto;
+            touch-action: pan-x pan-y;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+        
+        .interpretation-panel {
+            background: #e8f4f8;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .interpretation-title {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .dynamic-explanation {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .highlight {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        .controls-panel {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .control-group {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .control-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #444;
+        }
+        
+        .control-description {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            background: #ddd;
+            border-radius: 4px;
+            outline: none;
+            -webkit-appearance: none;
+            margin: 15px 0;
+            cursor: pointer;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border: 2px solid white;
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        
+        .value-display {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        
+        .value-number {
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .value-meaning {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .prediction-tool {
+            background: #f0f8f0;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .prediction-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #155724;
+        }
+        
+        .prediction-input {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .prediction-input input {
+            width: 80px;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            -webkit-appearance: none;
+        }
+        
+        .prediction-result {
+            font-size: 16px;
+            font-weight: 600;
+            padding: 12px;
+            background: rgba(40, 167, 69, 0.1);
+            border-radius: 6px;
+            text-align: center;
+        }
+        
+        .insights-panel {
+            background: #fff3cd;
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .insights-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #856404;
+        }
+        
+        .insight-item {
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #856404;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+            font-size: 13px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            width: 100%;
+            transition: transform 0.2s;
+            font-size: 16px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        
+        button:hover {
+            transform: translateY(-1px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .tutorial-tip {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #0c5460;
+            line-height: 1.4;
+        }
+        
+        .tutorial-tip strong {
+            color: #0c5460;
+        }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px 15px;
+                margin: 0;
+                border-radius: 15px;
+            }
+            
+            .header {
+                margin-bottom: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+                margin-bottom: 8px;
+            }
+            
+            .subtitle {
+                font-size: 14px;
+                margin-bottom: 15px;
+            }
+            
+            .scenario-selector {
+                gap: 8px;
+                margin-bottom: 15px;
+            }
+            
+            .scenario-btn {
+                padding: 10px 14px;
+                font-size: 13px;
+                border-radius: 25px;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                -webkit-tap-highlight-color: transparent;
+                touch-action: manipulation;
+            }
+            
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .chart-container {
+                padding: 15px;
+                border-radius: 10px;
+                margin-bottom: 15px;
+            }
+            
+            #logisticChart {
+                width: 100% !important;
+                height: 350px !important;
+                max-width: 100%;
+            }
+            
+            .legend {
+                gap: 8px;
+                font-size: 11px;
+                margin-top: 10px;
+            }
+            
+            .legend-item {
+                gap: 4px;
+                margin-bottom: 5px;
+            }
+            
+            .legend-color {
+                width: 12px;
+                height: 12px;
+            }
+            
+            .interpretation-panel {
+                padding: 15px;
+                border-radius: 10px;
+                border-left-width: 4px;
+            }
+            
+            .interpretation-title {
+                font-size: 16px;
+                margin-bottom: 12px;
+            }
+            
+            .dynamic-explanation {
+                font-size: 14px;
+                line-height: 1.5;
+            }
+            
+            .controls-panel {
+                padding: 15px;
+                border-radius: 10px;
+                gap: 15px;
+            }
+            
+            .control-group {
+                padding: 12px;
+                border-radius: 6px;
+            }
+            
+            .control-label {
+                font-size: 14px;
+                margin-bottom: 6px;
+            }
+            
+            .control-description {
+                font-size: 11px;
+                margin-bottom: 8px;
+            }
+            
+            input[type="range"] {
+                height: 10px;
+                margin: 20px 0;
+            }
+            
+            input[type="range"]::-webkit-slider-thumb {
+                width: 28px;
+                height: 28px;
+            }
+            
+            input[type="range"]::-moz-range-thumb {
+                width: 28px;
+                height: 28px;
+            }
+            
+            .value-display {
+                font-size: 13px;
+            }
+            
+            .prediction-tool {
+                padding: 12px;
+                border-radius: 6px;
+            }
+            
+            .prediction-title {
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+            
+            .prediction-input {
+                gap: 8px;
+                margin-bottom: 8px;
+            }
+            
+            .prediction-input span {
+                font-size: 14px;
+                min-width: fit-content;
+            }
+            
+            .prediction-input input {
+                width: 100px;
+                padding: 10px 12px;
+                font-size: 16px;
+                min-height: 44px;
+                -webkit-appearance: none;
+                border-radius: 6px;
+            }
+            
+            .prediction-result {
+                font-size: 15px;
+                padding: 10px;
+            }
+            
+            .insights-panel {
+                padding: 12px;
+                border-radius: 6px;
+            }
+            
+            .insights-title {
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+            
+            .insight-item {
+                font-size: 12px;
+                margin-bottom: 6px;
+            }
+            
+            button {
+                padding: 16px 20px;
+                font-size: 16px;
+                border-radius: 8px;
+                min-height: 48px;
+            }
+            
+            .tutorial-tip {
+                padding: 10px;
+                margin-bottom: 12px;
+                font-size: 12px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px 10px;
+                border-radius: 10px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            .subtitle {
+                font-size: 13px;
+            }
+            
+            .scenario-selector {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .scenario-btn {
+                width: 100%;
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+            
+            #logisticChart {
+                height: 350px !important; /* Increased from 250px */
+            }
+            
+            .legend {
+                flex-direction: column;
+                align-items: center;
+                gap: 6px;
+                font-size: 10px;
+            }
+            
+            .legend-item {
+                justify-content: center;
+            }
+            
+            .prediction-input {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            
+            .prediction-input span {
+                text-align: left;
+            }
+            
+            .prediction-input input {
+                width: 100%;
+            }
+            
+            .dynamic-explanation {
+                font-size: 13px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .container {
+                padding: 10px 8px;
+            }
+            
+            h1 {
+                font-size: 18px;
+            }
+            
+            #logisticChart {
+                height: 320px !important; /* Increased from 220px */
+            }
+            
+            .chart-container {
+                padding: 10px;
+            }
+            
+            .controls-panel {
+                padding: 10px;
+            }
+            
+            .control-group {
+                padding: 10px;
+            }
+        }
+        
+        /* Touch improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .scenario-btn:hover {
+                border-color: #ddd;
+            }
+            
+            .scenario-btn:active {
+                background: #f0f0f0;
+                transform: scale(0.98);
+            }
+            
+            .scenario-btn.active:active {
+                background: linear-gradient(135deg, #5a6fd8 0%, #6b4190 100%);
+            }
+            
+            button:hover {
+                transform: none;
+            }
+            
+            button:active {
+                background: linear-gradient(135deg, #5a6fd8 0%, #6b4190 100%);
+                transform: scale(0.98);
+            }
+        }
+        
+        /* Prevent zoom on input focus */
+        @media screen and (max-width: 768px) {
+            input[type="number"] {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Furniture Retail Analytics</h1>
+            <p class="subtitle">Track simple metrics that any employee can measure</p>
+            
+            <div class="scenario-selector">
+                <div class="scenario-btn active" onclick="setScenario('time')" data-scenario="time" role="button" tabindex="0">
+                    🕐 Time of Day
+                </div>
+                <div class="scenario-btn" onclick="setScenario('dayweek')" data-scenario="dayweek" role="button" tabindex="0">
+                    📅 Day of Week
+                </div>
+                <div class="scenario-btn" onclick="setScenario('groupsize')" data-scenario="groupsize" role="button" tabindex="0">
+                    👥 Group Size
+                </div>
+                <div class="scenario-btn" onclick="setScenario('touched')" data-scenario="touched" role="button" tabindex="0">
+                    👆 Items Examined
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-layout">
+            <div class="chart-section">
+                <div class="tutorial-tip">
+                    <strong>💡 Try this:</strong> <span id="tutorialText">See how time of day affects purchase rates - afternoon shoppers often convert better!</span>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="logisticChart" width="800" height="500"></canvas>
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #dc3545;"></div>
+                            <span id="legendNegative">Browses Only</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #007bff;"></div>
+                            <span>Prediction Curve</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: rgba(0,123,255,0.2);"></div>
+                            <span>Uncertainty Range</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: rgba(220,53,69,0.4);"></div>
+                            <span id="legendNegativeHist">Browses Only Cases</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: rgba(40,167,69,0.4);"></div>
+                            <span id="legendPositiveHist">Purchases Cases</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="interpretation-panel">
+                    <div class="interpretation-title">What This Chart Shows</div>
+                    <div class="dynamic-explanation" id="dynamicExplanation">
+                        This chart shows how simple metrics can predict customer behavior in your furniture store.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls-panel">
+                <div class="control-group">
+                    <label class="control-label">Baseline Rate</label>
+                    <div class="control-description">How common is the positive outcome when factors are average?</div>
+                    <input type="range" id="interceptSlider" min="-2" max="2" step="0.1" value="0">
+                    <div class="value-display">
+                        <span class="value-number" id="interceptValue">50%</span>
+                        <span class="value-meaning" id="interceptMeaning">Balanced</span>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Relationship Strength</label>
+                    <div class="control-description">How much does the factor influence the outcome?</div>
+                    <input type="range" id="slopeSlider" min="-2" max="2" step="0.1" value="1">
+                    <div class="value-display">
+                        <span class="value-number" id="slopeValue">Strong</span>
+                        <span class="value-meaning" id="slopeMeaning">Positive effect</span>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Data Amount</label>
+                    <div class="control-description">How many cases do we have?</div>
+                    <input type="range" id="sampleSlider" min="50" max="500" step="25" value="200">
+                    <div class="value-display">
+                        <span class="value-number" id="sampleValue">200</span>
+                        <span class="value-meaning">Good sample</span>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Data Noise</label>
+                    <div class="control-description">How much random variation is there?</div>
+                    <input type="range" id="noiseSlider" min="0.1" max="2" step="0.1" value="0.5">
+                    <div class="value-display">
+                        <span class="value-number" id="noiseValue">Moderate</span>
+                        <span class="value-meaning" id="noiseMeaning">Some uncertainty</span>
+                    </div>
+                </div>
+                
+                <button onclick="generateNewData()">🎲 Generate New Data</button>
+                
+                <div class="prediction-tool">
+                    <div class="prediction-title">🎯 Make a Prediction</div>
+                    <div class="prediction-input">
+                        <span id="predictionLabel">Hour (24-hour):</span>
+                        <input type="number" id="predictionInput" value="15" step="1" min="9" max="21">
+                    </div>
+                    <div class="prediction-result" id="predictionResult">
+                        Probability: 73%
+                    </div>
+                </div>
+                
+                <div class="insights-panel">
+                    <div class="insights-title">📊 Key Business Insights</div>
+                    <div id="insightsList">
+                        <div class="insight-item">• The curve shows the probability relationship</div>
+                        <div class="insight-item">• Bars show actual data distribution</div>
+                        <div class="insight-item">• Blue area shows uncertainty</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Global variables
+        let canvas = document.getElementById('logisticChart');
+        let ctx = canvas.getContext('2d');
+        let data = [];
+        let intercept = 0;
+        let slope = 1;
+        let sampleSize = 200;
+        let noiseLevel = 0.5;
+        let currentScenario = 'time';
+        
+        // Scenario configurations
+        const scenarios = {
+            time: {
+                title: "Time of Day Impact",
+                xLabel: "Hour of Day",
+                yLabel: "Makes Purchase",
+                positiveLabel: "Purchases",
+                negativeLabel: "Browses Only",
+                predictionLabel: "Hour (24-hour):",
+                description: "predicting purchase likelihood based on what time customers visit the store",
+                xMin: 9,
+                xMax: 21,
+                xDefault: 15,
+                xStep: 1
+            },
+            dayweek: {
+                title: "Day of Week Patterns", 
+                xLabel: "Day of Week",
+                yLabel: "Requests Delivery",
+                positiveLabel: "Delivery",
+                negativeLabel: "Pickup",
+                predictionLabel: "Day (1=Mon, 7=Sun):",
+                description: "predicting delivery requests based on which day of the week customers shop",
+                xMin: 1,
+                xMax: 7,
+                xDefault: 4,
+                xStep: 1
+            },
+            groupsize: {
+                title: "Customer Group Size",
+                xLabel: "People in Shopping Group",
+                yLabel: "Buys Premium", 
+                positiveLabel: "Premium",
+                negativeLabel: "Budget",
+                predictionLabel: "Group size:",
+                description: "predicting premium purchases based on how many people shop together",
+                xMin: 1,
+                xMax: 6,
+                xDefault: 2,
+                xStep: 1
+            },
+            touched: {
+                title: "Customer Engagement Level",
+                xLabel: "Items Touched/Examined",
+                yLabel: "Makes Purchase",
+                positiveLabel: "Purchases", 
+                negativeLabel: "Leaves",
+                predictionLabel: "Items examined:",
+                description: "predicting purchases based on how many furniture pieces customers physically examine",
+                xMin: 0,
+                xMax: 12,
+                xDefault: 4,
+                xStep: 1
+            }
+        };
+        
+        // Conversion functions between internal scale and display scale
+        function convertToDisplayValue(internalX) {
+            const scenario = scenarios[currentScenario];
+            const normalizedX = (internalX + 4) / 8; // Convert -4,4 to 0,1
+            return scenario.xMin + normalizedX * (scenario.xMax - scenario.xMin);
+        }
+        
+        function convertFromDisplayValue(displayX) {
+            const scenario = scenarios[currentScenario];
+            const normalizedX = (displayX - scenario.xMin) / (scenario.xMax - scenario.xMin); // Convert to 0,1
+            return normalizedX * 8 - 4; // Convert 0,1 to -4,4
+        }
+        
+        // Set canvas size with mobile responsiveness
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            const containerWidth = container.clientWidth - 40; // Account for padding
+            const isMobile = window.innerWidth <= 768;
+            const isSmallMobile = window.innerWidth <= 480;
+            
+            if (isMobile) {
+                canvas.width = Math.min(containerWidth, 500);
+                // Give much more height on mobile to prevent compression
+                if (isSmallMobile) {
+                    canvas.height = 350; // Much taller for small screens
+                } else {
+                    canvas.height = 400; // Taller for tablets
+                }
+            } else {
+                canvas.width = 800;
+                canvas.height = 500;
+            }
+            
+            // Redraw after resize
+            if (data.length > 0) {
+                draw();
+            }
+        }
+        
+        // Initial canvas setup
+        resizeCanvas();
+        
+        function setScenario(scenarioKey) {
+            currentScenario = scenarioKey;
+            
+            // Update active button
+            document.querySelectorAll('.scenario-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const activeBtn = document.querySelector(`[data-scenario="${scenarioKey}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+            
+            // Update all scenario-specific content
+            updateScenarioLabels();
+            updateDynamicExplanation();
+            updatePrediction();
+            
+            // Generate new data for the new scenario context and redraw
+            generateData();
+            draw();
+        }
+        
+        // Add keyboard support for scenario buttons
+        function setupScenarioKeyboardSupport() {
+            document.querySelectorAll('.scenario-btn').forEach(btn => {
+                btn.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        const scenario = this.getAttribute('data-scenario');
+                        setScenario(scenario);
+                    }
+                });
+            });
+        }
+        
+        function updateScenarioLabels() {
+            const scenario = scenarios[currentScenario];
+            
+            const legendNegativeEl = document.getElementById('legendNegative');
+            const legendNegativeHistEl = document.getElementById('legendNegativeHist');
+            const legendPositiveHistEl = document.getElementById('legendPositiveHist');
+            const predictionLabelEl = document.getElementById('predictionLabel');
+            const predictionInputEl = document.getElementById('predictionInput');
+            
+            if (legendNegativeEl) legendNegativeEl.textContent = scenario.negativeLabel;
+            if (legendNegativeHistEl) legendNegativeHistEl.textContent = scenario.negativeLabel + ' Cases';
+            if (legendPositiveHistEl) legendPositiveHistEl.textContent = scenario.positiveLabel + ' Cases';
+            if (predictionLabelEl) predictionLabelEl.textContent = scenario.predictionLabel;
+            
+            // Update prediction input range and default value
+            if (predictionInputEl) {
+                predictionInputEl.min = scenario.xMin;
+                predictionInputEl.max = scenario.xMax;
+                predictionInputEl.step = scenario.xStep;
+                predictionInputEl.value = scenario.xDefault;
+            }
+        }
+        
+        function setupEventListeners() {
+            const interceptSlider = document.getElementById('interceptSlider');
+            const slopeSlider = document.getElementById('slopeSlider');
+            const sampleSlider = document.getElementById('sampleSlider');
+            const noiseSlider = document.getElementById('noiseSlider');
+            const predictionInput = document.getElementById('predictionInput');
+            
+            if (interceptSlider) {
+                interceptSlider.addEventListener('input', function() {
+                    intercept = parseFloat(this.value);
+                    updateAllDisplays();
+                    draw();
+                });
+            }
+            
+            if (slopeSlider) {
+                slopeSlider.addEventListener('input', function() {
+                    slope = parseFloat(this.value);
+                    updateAllDisplays();
+                    draw();
+                });
+            }
+            
+            if (sampleSlider) {
+                sampleSlider.addEventListener('input', function() {
+                    sampleSize = parseInt(this.value);
+                    const sampleValueEl = document.getElementById('sampleValue');
+                    if (sampleValueEl) {
+                        sampleValueEl.textContent = sampleSize;
+                    }
+                    generateData();
+                    updateAllDisplays();
+                    draw();
+                });
+            }
+            
+            if (noiseSlider) {
+                noiseSlider.addEventListener('input', function() {
+                    noiseLevel = parseFloat(this.value);
+                    updateAllDisplays();
+                    generateData();
+                    draw();
+                });
+            }
+            
+            if (predictionInput) {
+                predictionInput.addEventListener('input', function() {
+                    updatePrediction();
+                });
+            }
+        }
+        
+        function updateAllDisplays() {
+            updateInterceptDisplay();
+            updateSlopeDisplay();
+            updateNoiseDisplay();
+            updateDynamicExplanation();
+            updateInsights();
+            updatePrediction();
+            updateTutorialTip();
+        }
+        
+        function updateInterceptDisplay() {
+            const probability = logisticFunction(0) * 100;
+            const interceptValueEl = document.getElementById('interceptValue');
+            const interceptMeaningEl = document.getElementById('interceptMeaning');
+            
+            if (interceptValueEl) {
+                interceptValueEl.textContent = probability.toFixed(0) + '%';
+            }
+            
+            let meaning;
+            if (probability < 20) meaning = "Very rare";
+            else if (probability < 40) meaning = "Uncommon"; 
+            else if (probability < 60) meaning = "Balanced";
+            else if (probability < 80) meaning = "Common";
+            else meaning = "Very common";
+            
+            if (interceptMeaningEl) {
+                interceptMeaningEl.textContent = meaning;
+            }
+        }
+        
+        function updateSlopeDisplay() {
+            const absSlope = Math.abs(slope);
+            let strength, direction;
+            
+            if (absSlope < 0.3) strength = "Weak";
+            else if (absSlope < 0.8) strength = "Moderate";
+            else if (absSlope < 1.5) strength = "Strong";
+            else strength = "Very Strong";
+            
+            direction = slope > 0 ? "Positive effect" : slope < 0 ? "Negative effect" : "No effect";
+            
+            const slopeValueEl = document.getElementById('slopeValue');
+            const slopeMeaningEl = document.getElementById('slopeMeaning');
+            
+            if (slopeValueEl) {
+                slopeValueEl.textContent = strength;
+            }
+            if (slopeMeaningEl) {
+                slopeMeaningEl.textContent = direction;
+            }
+        }
+        
+        function updateNoiseDisplay() {
+            let level, meaning;
+            if (noiseLevel < 0.5) {
+                level = "Low";
+                meaning = "Clear pattern";
+            } else if (noiseLevel < 1) {
+                level = "Moderate"; 
+                meaning = "Some uncertainty";
+            } else if (noiseLevel < 1.5) {
+                level = "High";
+                meaning = "Noisy data";
+            } else {
+                level = "Very High";
+                meaning = "Very uncertain";
+            }
+            
+            const noiseValueEl = document.getElementById('noiseValue');
+            const noiseMeaningEl = document.getElementById('noiseMeaning');
+            
+            if (noiseValueEl) {
+                noiseValueEl.textContent = level;
+            }
+            if (noiseMeaningEl) {
+                noiseMeaningEl.textContent = meaning;
+            }
+        }
+        
+        function updateDynamicExplanation() {
+            const scenario = scenarios[currentScenario];
+            const slopeDirection = slope > 0 ? "increases" : slope < 0 ? "decreases" : "doesn't change";
+            const strength = Math.abs(slope) > 1 ? "dramatically" : Math.abs(slope) > 0.5 ? "significantly" : "slightly";
+            const baseline = logisticFunction(0) * 100;
+            
+            let explanation = `This chart shows ${scenario.description}. `;
+            
+            if (Math.abs(slope) < 0.1) {
+                explanation += `Currently, the ${scenario.xLabel.toLowerCase()} has <span class="highlight">almost no effect</span> on the outcome. `;
+            } else {
+                explanation += `As ${scenario.xLabel.toLowerCase()} increases, the probability of "${scenario.positiveLabel}" <span class="highlight">${slopeDirection} ${strength}</span>. `;
+            }
+            
+            explanation += `When factors are at average levels, there's a <span class="highlight">${baseline.toFixed(0)}% chance</span> of a positive outcome. `;
+            
+            if (noiseLevel > 1) {
+                explanation += `The data shows <span class="highlight">high variability</span>, meaning predictions are less certain.`;
+            } else if (noiseLevel < 0.5) {
+                explanation += `The data shows a <span class="highlight">clear pattern</span>, making predictions more reliable.`;
+            } else {
+                explanation += `The data shows <span class="highlight">moderate variability</span>, which is typical in real-world retail scenarios.`;
+            }
+            
+            const explanationEl = document.getElementById('dynamicExplanation');
+            if (explanationEl) {
+                explanationEl.innerHTML = explanation;
+            }
+        }
+        
+        function updateInsights() {
+            const accuracy = calculateAccuracy();
+            
+            let insights = [];
+            
+            if (Math.abs(slope) > 1.2) {
+                insights.push("• Strong relationship - this factor is highly predictive");
+            } else if (Math.abs(slope) < 0.3) {
+                insights.push("• Weak relationship - this factor has little predictive power");
+            } else {
+                insights.push("• Moderate relationship - this factor is somewhat predictive");
+            }
+            
+            if (accuracy > 80) {
+                insights.push("• High accuracy - model predictions are reliable");
+            } else if (accuracy > 60) {
+                insights.push("• Moderate accuracy - model is reasonably reliable");
+            } else {
+                insights.push("• Low accuracy - predictions are uncertain");
+            }
+            
+            if (sampleSize > 300) {
+                insights.push("• Large sample size increases confidence");
+            } else if (sampleSize < 100) {
+                insights.push("• Small sample size - results less certain");
+            }
+            
+            const insightsEl = document.getElementById('insightsList');
+            if (insightsEl) {
+                insightsEl.innerHTML = insights.join('<br>');
+            }
+        }
+        
+        function updatePrediction() {
+            const inputEl = document.getElementById('predictionInput');
+            const resultEl = document.getElementById('predictionResult');
+            
+            if (!inputEl || !resultEl) return;
+            
+            const displayValue = parseFloat(inputEl.value) || 0;
+            const internalValue = convertFromDisplayValue(displayValue);
+            const probability = logisticFunction(internalValue) * 100;
+            const scenario = scenarios[currentScenario];
+            
+            let interpretation;
+            if (probability > 80) interpretation = "Very Likely";
+            else if (probability > 60) interpretation = "Likely";
+            else if (probability > 40) interpretation = "Uncertain";
+            else if (probability > 20) interpretation = "Unlikely";
+            else interpretation = "Very Unlikely";
+            
+            resultEl.innerHTML = 
+                `<strong>${probability.toFixed(0)}% chance</strong><br><small>${interpretation} to be "${scenario.positiveLabel}"</small>`;
+        }
+        
+        function updateTutorialTip() {
+            const tips = [
+                "See how time of day affects purchase rates - afternoon shoppers often convert better!",
+                "Try different scenarios to see how simple metrics impact sales!",
+                "Drag the 'Relationship Strength' slider to see how it changes the curve steepness!",
+                "Use the prediction tool to test different customer scenarios!"
+            ];
+            
+            let tipIndex = Math.floor(Math.random() * tips.length);
+            
+            const tutorialEl = document.getElementById('tutorialText');
+            if (tutorialEl) {
+                tutorialEl.textContent = tips[tipIndex];
+            }
+        }
+        
+        function generateData() {
+            data = [];
+            for (let i = 0; i < sampleSize; i++) {
+                const x = (Math.random() - 0.5) * 8; // x from -4 to 4 (internal scale)
+                const logit = intercept + slope * x + (Math.random() - 0.5) * noiseLevel * 2;
+                const probability = 1 / (1 + Math.exp(-logit));
+                const y = Math.random() < probability ? 1 : 0;
+                data.push({ x, y, probability });
+            }
+        }
+        
+        function generateNewData() {
+            generateData();
+            updateAllDisplays();
+            draw();
+        }
+        
+        function logisticFunction(x) {
+            return 1 / (1 + Math.exp(-(intercept + slope * x)));
+        }
+        
+        function calculateAccuracy() {
+            let correct = 0;
+            for (let point of data) {
+                const predicted = logisticFunction(point.x) > 0.5 ? 1 : 0;
+                if (predicted === point.y) correct++;
+            }
+            return (correct / data.length * 100);
+        }
+        
+        function draw() {
+            const width = canvas.width;
+            const height = canvas.height;
+            const isMobile = window.innerWidth <= 768;
+            const isSmallMobile = window.innerWidth <= 480;
+            
+            // More generous margins on mobile to prevent compression
+            let margin;
+            if (isSmallMobile) {
+                margin = 50; // Larger margins for small screens
+            } else if (isMobile) {
+                margin = 55; // Medium margins for tablets
+            } else {
+                margin = 60; // Standard margins for desktop
+            }
+            
+            const plotWidth = width - 2 * margin;
+            const plotHeight = height - 2 * margin;
+            
+            // Get scenario-specific ranges for display
+            const scenario = scenarios[currentScenario];
+            const xMin = scenario.xMin;
+            const xMax = scenario.xMax;
+            const yMin = -0.1, yMax = 1.1;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, width, height);
+            
+            function xToCanvas(x) {
+                return margin + ((x - xMin) / (xMax - xMin)) * plotWidth;
+            }
+            
+            function yToCanvas(y) {
+                return height - margin - ((y - yMin) / (yMax - yMin)) * plotHeight;
+            }
+            
+            // Draw background
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(margin, margin, plotWidth, plotHeight);
+            
+            // Draw grid
+            ctx.strokeStyle = '#f0f0f0';
+            ctx.lineWidth = 1;
+            
+            // Vertical grid lines
+            const xStep = scenario.xStep;
+            for (let x = xMin; x <= xMax; x += xStep) {
+                const canvasX = xToCanvas(x);
+                ctx.beginPath();
+                ctx.moveTo(canvasX, margin);
+                ctx.lineTo(canvasX, height - margin);
+                ctx.stroke();
+            }
+            
+            // Horizontal grid lines
+            for (let y = 0; y <= 1; y += 0.25) {
+                const canvasY = yToCanvas(y);
+                ctx.beginPath();
+                ctx.moveTo(margin, canvasY);
+                ctx.lineTo(width - margin, canvasY);
+                ctx.stroke();
+            }
+            
+            // Draw histogram background
+            const bins = Math.min(30, xMax - xMin + 1);
+            const binWidth = (xMax - xMin) / bins;
+            const binCounts = { 0: new Array(bins).fill(0), 1: new Array(bins).fill(0) };
+            
+            for (let point of data) {
+                const displayX = convertToDisplayValue(point.x);
+                const binIndex = Math.floor((displayX - xMin) / binWidth);
+                if (binIndex >= 0 && binIndex < bins) {
+                    binCounts[point.y][binIndex]++;
+                }
+            }
+            
+            // Draw histogram bars from the middle (0.5 line)
+            const maxCount = Math.max(...binCounts[0], ...binCounts[1]);
+            const histScale = 0.25;
+            const middleY = yToCanvas(0.5);
+            
+            if (maxCount > 0) {
+                for (let i = 0; i < bins; i++) {
+                    const x1 = xMin + i * binWidth;
+                    const x2 = x1 + binWidth;
+                    const canvasX1 = xToCanvas(x1);
+                    const canvasX2 = xToCanvas(x2);
+                    const barWidth = canvasX2 - canvasX1;
+                    
+                    // Draw bars for y=0 (below middle line)
+                    if (binCounts[0][i] > 0) {
+                        const barHeight = (binCounts[0][i] / maxCount) * histScale * plotHeight;
+                        ctx.fillStyle = 'rgba(220, 53, 69, 0.5)';
+                        ctx.fillRect(canvasX1, middleY, barWidth, barHeight);
+                    }
+                    
+                    // Draw bars for y=1 (above middle line)
+                    if (binCounts[1][i] > 0) {
+                        const barHeight = (binCounts[1][i] / maxCount) * histScale * plotHeight;
+                        ctx.fillStyle = 'rgba(40, 167, 69, 0.5)';
+                        ctx.fillRect(canvasX1, middleY - barHeight, barWidth, barHeight);
+                    }
+                }
+            }
+            
+            // Draw confidence interval
+            ctx.fillStyle = 'rgba(0, 123, 255, 0.15)';
+            ctx.beginPath();
+            const step = (xMax - xMin) / 100;
+            for (let displayX = xMin; displayX <= xMax; displayX += step) {
+                const internalX = convertFromDisplayValue(displayX);
+                const p = logisticFunction(internalX);
+                const se = Math.sqrt(p * (1 - p) / Math.max(10, sampleSize / 20));
+                const upperCI = Math.min(1, p + 1.96 * se);
+                
+                if (displayX === xMin) {
+                    ctx.moveTo(xToCanvas(displayX), yToCanvas(upperCI));
+                } else {
+                    ctx.lineTo(xToCanvas(displayX), yToCanvas(upperCI));
+                }
+            }
+            for (let displayX = xMax; displayX >= xMin; displayX -= step) {
+                const internalX = convertFromDisplayValue(displayX);
+                const p = logisticFunction(internalX);
+                const se = Math.sqrt(p * (1 - p) / Math.max(10, sampleSize / 20));
+                const lowerCI = Math.max(0, p - 1.96 * se);
+                ctx.lineTo(xToCanvas(displayX), yToCanvas(lowerCI));
+            }
+            ctx.closePath();
+            ctx.fill();
+            
+            // Draw logistic curve
+            ctx.strokeStyle = '#007bff';
+            ctx.lineWidth = isMobile ? 3 : 4;
+            ctx.beginPath();
+            for (let displayX = xMin; displayX <= xMax; displayX += step) {
+                const internalX = convertFromDisplayValue(displayX);
+                const y = logisticFunction(internalX);
+                const canvasX = xToCanvas(displayX);
+                const canvasY = yToCanvas(y);
+                
+                if (displayX === xMin) {
+                    ctx.moveTo(canvasX, canvasY);
+                } else {
+                    ctx.lineTo(canvasX, canvasY);
+                }
+            }
+            ctx.stroke();
+            
+            // Draw data points with jitter
+            const pointRadius = isMobile ? 3.5 : 4;
+            for (let point of data) {
+                const displayX = convertToDisplayValue(point.x);
+                const canvasX = xToCanvas(displayX);
+                const baseY = point.y === 1 ? 1 : 0;
+                const jitter = (Math.random() - 0.5) * 0.06;
+                const canvasY = yToCanvas(baseY + jitter);
+                
+                ctx.fillStyle = point.y === 1 ? '#28a745' : '#dc3545';
+                ctx.globalAlpha = 0.7;
+                ctx.beginPath();
+                ctx.arc(canvasX, canvasY, pointRadius, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+            
+            // Draw reference line at p = 0.5
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = isMobile ? 1.5 : 2;
+            ctx.setLineDash([8, 4]);
+            ctx.beginPath();
+            ctx.moveTo(margin, yToCanvas(0.5));
+            ctx.lineTo(width - margin, yToCanvas(0.5));
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Draw axes
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = isMobile ? 1.5 : 2;
+            
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(margin, height - margin);
+            ctx.lineTo(width - margin, height - margin);
+            ctx.stroke();
+            
+            // Y-axis  
+            ctx.beginPath();
+            ctx.moveTo(margin, margin);
+            ctx.lineTo(margin, height - margin);
+            ctx.stroke();
+            
+            // Draw labels with better spacing on mobile
+            ctx.fillStyle = '#333';
+            ctx.font = isMobile ? '11px Inter' : '14px Inter';
+            ctx.textAlign = 'center';
+            
+            // X-axis labels (reduce frequency on mobile for readability)
+            const labelStep = isMobile && (xMax - xMin) > 8 ? xStep * 2 : xStep;
+            for (let x = xMin; x <= xMax; x += labelStep) {
+                const canvasX = xToCanvas(x);
+                let label = x.toString();
+                if (currentScenario === 'time') {
+                    label = isMobile ? x + '' : x + ':00';
+                } else if (currentScenario === 'dayweek') {
+                    const days = ['', 'M', 'T', 'W', 'T', 'F', 'S', 'S'];
+                    const fullDays = ['', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                    label = isMobile ? days[x] : fullDays[x] || x.toString();
+                } else if (currentScenario === 'groupsize') {
+                    label = isMobile ? x.toString() : x + (x === 1 ? ' person' : ' people');
+                } else if (currentScenario === 'touched') {
+                    label = isMobile ? x.toString() : x + ' items';
+                }
+                ctx.fillText(label, canvasX, height - margin + (isMobile ? 20 : 25));
+            }
+            
+            // Y-axis labels with better spacing
+            ctx.textAlign = 'right';
+            const yLabelOffset = isMobile ? 8 : 10;
+            ctx.fillText('0%', margin - yLabelOffset, yToCanvas(0) + 4);
+            ctx.fillText('50%', margin - yLabelOffset, yToCanvas(0.5) + 4);
+            ctx.fillText('100%', margin - yLabelOffset, yToCanvas(1) + 4);
+            
+            // Only show 25% and 75% labels on larger screens
+            if (!isSmallMobile) {
+                ctx.fillText('25%', margin - yLabelOffset, yToCanvas(0.25) + 4);
+                ctx.fillText('75%', margin - yLabelOffset, yToCanvas(0.75) + 4);
+            }
+            
+            // Draw axis titles with better positioning
+            ctx.font = isMobile ? '13px Inter' : '16px Inter';
+            ctx.fillStyle = '#444';
+            ctx.textAlign = 'center';
+            
+            // X-axis title
+            const xTitleY = height - (isMobile ? 5 : 8);
+            ctx.fillText(scenario.xLabel, width / 2, xTitleY);
+            
+            // Y-axis title (shorter on mobile)
+            ctx.save();
+            ctx.translate(isMobile ? 15 : 18, height / 2);
+            ctx.rotate(-Math.PI / 2);
+            const yTitle = isMobile ? scenario.positiveLabel : `Probability of ${scenario.positiveLabel}`;
+            ctx.fillText(yTitle, 0, 0);
+            ctx.restore();
+        }
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                generateData();
+                setupEventListeners();
+                setupScenarioKeyboardSupport();
+                updateScenarioLabels();
+                updateAllDisplays();
+                draw();
+                
+                // Handle window resize for mobile
+                window.addEventListener('resize', function() {
+                    resizeCanvas();
+                });
+                
+                // Prevent zoom on double tap for iOS
+                let lastTouchEnd = 0;
+                document.addEventListener('touchend', function (event) {
+                    const now = (new Date()).getTime();
+                    if (now - lastTouchEnd <= 300) {
+                        event.preventDefault();
+                    }
+                    lastTouchEnd = now;
+                }, false);
+                
+            } catch (error) {
+                console.error('Initialization error:', error);
+            }
+        });
+        
+        // Fallback initialization if DOMContentLoaded already fired
+        if (document.readyState !== 'loading') {
+            try {
+                generateData();
+                setupEventListeners();
+                setupScenarioKeyboardSupport();
+                updateScenarioLabels();
+                updateAllDisplays();
+                draw();
+                
+                // Handle window resize for mobile
+                window.addEventListener('resize', function() {
+                    resizeCanvas();
+                });
+                
+                // Prevent zoom on double tap for iOS
+                let lastTouchEnd = 0;
+                document.addEventListener('touchend', function (event) {
+                    const now = (new Date()).getTime();
+                    if (now - lastTouchEnd <= 300) {
+                        event.preventDefault();
+                    }
+                    lastTouchEnd = now;
+                }, false);
+                
+            } catch (error) {
+                console.error('Fallback initialization error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
