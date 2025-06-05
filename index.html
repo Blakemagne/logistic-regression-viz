@@ -57,7 +57,7 @@
         }
         
         .scenario-dropdown-container {
-            display: none; /* Hidden by default */
+            display: none;
             flex-direction: column;
             margin-bottom: 20px;
         }
@@ -169,6 +169,55 @@
             padding: 2px 4px;
             border-radius: 3px;
             font-weight: 600;
+        }
+        
+        .discovery-zone {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            line-height: 1.4;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .discovery-zone::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .discovery-zone:hover::before {
+            left: 100%;
+        }
+        
+        .discovery-zone strong {
+            color: white;
+            font-size: 16px;
+            margin-right: 8px;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-3px);
+            }
+            60% {
+                transform: translateY(-2px);
+            }
         }
         
         .controls-panel {
@@ -352,21 +401,6 @@
             transform: translateY(0);
         }
         
-        .tutorial-tip {
-            background: #d1ecf1;
-            border: 1px solid #bee5eb;
-            border-radius: 6px;
-            padding: 12px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            color: #0c5460;
-            line-height: 1.4;
-        }
-        
-        .tutorial-tip strong {
-            color: #0c5460;
-        }
-        
         /* Mobile Optimizations */
         @media (max-width: 768px) {
             body {
@@ -396,7 +430,6 @@
                 margin-bottom: 15px;
             }
             
-            /* Hide buttons and show dropdown on mobile */
             .scenario-selector {
                 display: none;
             }
@@ -406,16 +439,13 @@
                 margin-bottom: 15px;
             }
             
-            .scenario-btn {
-                padding: 10px 14px;
-                font-size: 13px;
-                border-radius: 25px;
-                min-height: 44px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                -webkit-tap-highlight-color: transparent;
-                touch-action: manipulation;
+            .discovery-zone {
+                padding: 12px;
+                margin-bottom: 12px;
+                font-size: 12px;
+                width: 100%;
+                box-sizing: border-box;
+                border-radius: 6px;
             }
             
             .main-layout {
@@ -439,278 +469,10 @@
                 box-sizing: border-box;
             }
             
-            .tutorial-tip {
-                padding: 10px;
-                margin-bottom: 12px;
-                font-size: 12px;
-                width: 100%;
-                box-sizing: border-box;
-            }
-            
             #logisticChart {
                 width: 100% !important;
                 max-width: 100% !important;
                 height: auto !important;
-            }
-            
-            .legend {
-                gap: 6px;
-                font-size: 11px;
-                margin-top: 10px;
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            
-            .legend-item {
-                gap: 4px;
-                margin-bottom: 5px;
-                font-size: 10px;
-            }
-            
-            .legend-color {
-                width: 12px;
-                height: 12px;
-            }
-            
-            .interpretation-panel {
-                padding: 15px;
-                border-radius: 10px;
-                border-left-width: 4px;
-                width: 100%;
-                box-sizing: border-box;
-            }
-            
-            .interpretation-title {
-                font-size: 16px;
-                margin-bottom: 12px;
-            }
-            
-            .dynamic-explanation {
-                font-size: 14px;
-                line-height: 1.5;
-            }
-            
-            .controls-panel {
-                padding: 15px;
-                border-radius: 10px;
-                gap: 15px;
-                width: 100%;
-                box-sizing: border-box;
-            }
-            
-            .control-group {
-                padding: 12px;
-                border-radius: 6px;
-            }
-            
-            .control-label {
-                font-size: 14px;
-                margin-bottom: 6px;
-            }
-            
-            .control-description {
-                font-size: 11px;
-                margin-bottom: 8px;
-            }
-            
-            input[type="range"] {
-                height: 10px;
-                margin: 20px 0;
-            }
-            
-            input[type="range"]::-webkit-slider-thumb {
-                width: 28px;
-                height: 28px;
-            }
-            
-            input[type="range"]::-moz-range-thumb {
-                width: 28px;
-                height: 28px;
-            }
-            
-            .value-display {
-                font-size: 13px;
-            }
-            
-            .prediction-tool {
-                padding: 12px;
-                border-radius: 6px;
-            }
-            
-            .prediction-title {
-                font-size: 14px;
-                margin-bottom: 8px;
-            }
-            
-            .prediction-input {
-                gap: 8px;
-                margin-bottom: 8px;
-            }
-            
-            .prediction-input span {
-                font-size: 14px;
-                min-width: fit-content;
-            }
-            
-            .prediction-input input {
-                width: 100px;
-                padding: 10px 12px;
-                font-size: 16px;
-                min-height: 44px;
-                -webkit-appearance: none;
-                border-radius: 6px;
-            }
-            
-            .prediction-result {
-                font-size: 15px;
-                padding: 10px;
-            }
-            
-            .insights-panel {
-                padding: 12px;
-                border-radius: 6px;
-            }
-            
-            .insights-title {
-                font-size: 14px;
-                margin-bottom: 8px;
-            }
-            
-            .insight-item {
-                font-size: 12px;
-                margin-bottom: 6px;
-            }
-            
-            button {
-                padding: 16px 20px;
-                font-size: 16px;
-                border-radius: 8px;
-                min-height: 48px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .container {
-                padding: 12px;
-                border-radius: 12px;
-            }
-            
-            h1 {
-                font-size: 20px;
-            }
-            
-            .subtitle {
-                font-size: 13px;
-            }
-            
-            .scenario-selector {
-                gap: 6px;
-            }
-            
-            .scenario-btn {
-                padding: 8px 12px;
-                font-size: 12px;
-                min-height: 40px;
-            }
-            
-            .chart-container {
-                padding: 12px;
-            }
-            
-            .tutorial-tip {
-                padding: 8px;
-                font-size: 11px;
-            }
-            
-            .legend {
-                gap: 4px;
-                font-size: 9px;
-            }
-            
-            .legend-item {
-                font-size: 9px;
-            }
-            
-            .legend-color {
-                width: 10px;
-                height: 10px;
-            }
-            
-            .prediction-input {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 8px;
-            }
-            
-            .prediction-input span {
-                text-align: left;
-            }
-            
-            .prediction-input input {
-                width: 100%;
-            }
-            
-            .dynamic-explanation {
-                font-size: 13px;
-            }
-        }
-        
-        @media (max-width: 360px) {
-            .container {
-                padding: 8px;
-            }
-            
-            h1 {
-                font-size: 18px;
-            }
-            
-            .chart-container {
-                padding: 8px;
-            }
-            
-            .controls-panel {
-                padding: 8px;
-            }
-            
-            .control-group {
-                padding: 8px;
-            }
-            
-            .tutorial-tip {
-                padding: 6px;
-                font-size: 10px;
-            }
-        }
-        
-        /* Touch improvements */
-        @media (hover: none) and (pointer: coarse) {
-            .scenario-btn:hover {
-                border-color: #ddd;
-            }
-            
-            .scenario-btn:active {
-                background: #f0f0f0;
-                transform: scale(0.98);
-            }
-            
-            .scenario-btn.active:active {
-                background: linear-gradient(135deg, #5a6fd8 0%, #6b4190 100%);
-            }
-            
-            button:hover {
-                transform: none;
-            }
-            
-            button:active {
-                background: linear-gradient(135deg, #5a6fd8 0%, #6b4190 100%);
-                transform: scale(0.98);
-            }
-        }
-        
-        /* Prevent zoom on input focus */
-        @media screen and (max-width: 768px) {
-            input[type="number"] {
-                font-size: 16px;
             }
         }
     </style>
@@ -723,34 +485,34 @@
             
             <div class="scenario-selector">
                 <div class="scenario-btn active" onclick="setScenario('time')" data-scenario="time" role="button" tabindex="0">
-                    🕐 Time of Day
+                    ⏰ Time Magic
                 </div>
                 <div class="scenario-btn" onclick="setScenario('dayweek')" data-scenario="dayweek" role="button" tabindex="0">
-                    📅 Day of Week
+                    📅 Weekly Rhythms
                 </div>
                 <div class="scenario-btn" onclick="setScenario('groupsize')" data-scenario="groupsize" role="button" tabindex="0">
-                    👥 Group Size
+                    🔄 Visit Journey
                 </div>
                 <div class="scenario-btn" onclick="setScenario('touched')" data-scenario="touched" role="button" tabindex="0">
-                    👆 Items Examined
+                    👆 Touch Factor
                 </div>
             </div>
             
             <div class="scenario-dropdown-container">
                 <label for="scenarioDropdown" class="dropdown-label">Choose Scenario:</label>
                 <select id="scenarioDropdown" class="scenario-dropdown" onchange="setScenarioFromDropdown(this.value)">
-                    <option value="time">🕐 Time of Day</option>
-                    <option value="dayweek">📅 Day of Week</option>
-                    <option value="groupsize">👥 Group Size</option>
-                    <option value="touched">👆 Items Examined</option>
+                    <option value="time">⏰ Time Magic</option>
+                    <option value="dayweek">📅 Weekly Rhythms</option>
+                    <option value="groupsize">🔄 Visit Journey</option>
+                    <option value="touched">👆 Touch Factor</option>
                 </select>
             </div>
         </div>
         
         <div class="main-layout">
             <div class="chart-section">
-                <div class="tutorial-tip">
-                    <strong>💡 Try this:</strong> <span id="tutorialText">See how time of day affects purchase rates - afternoon shoppers often convert better!</span>
+                <div class="discovery-zone">
+                    <strong id="discoveryIcon">🔍</strong> <span id="discoveryText">Business hours magic from 11am to 7pm - when do customers convert best?</span>
                 </div>
                 
                 <div class="chart-container">
@@ -828,13 +590,13 @@
                     </div>
                 </div>
                 
-                <button onclick="generateNewData()">🎲 Generate New Data</button>
+                <button onclick="generateNewData()">🎲 Total Chaos Mode!</button>
                 
                 <div class="prediction-tool">
                     <div class="prediction-title">🎯 Make a Prediction</div>
                     <div class="prediction-input">
                         <span id="predictionLabel">Hour (24-hour):</span>
-                        <input type="number" id="predictionInput" value="15" step="1" min="9" max="21">
+                        <input type="number" id="predictionInput" value="15" step="1" min="11" max="19">
                     </div>
                     <div class="prediction-result" id="predictionResult">
                         Probability: 73%
@@ -842,7 +604,7 @@
                 </div>
                 
                 <div class="insights-panel">
-                    <div class="insights-title">📊 Key Business Insights</div>
+                    <div class="insights-title">🔥 Hot Takes & Discoveries</div>
                     <div id="insightsList">
                         <div class="insight-item">• The curve shows the probability relationship</div>
                         <div class="insight-item">• Bars show actual data distribution</div>
@@ -867,56 +629,56 @@
         // Scenario configurations
         const scenarios = {
             time: {
-                title: "Time of Day Impact",
+                title: "Time Magic",
                 xLabel: "Hour of Day",
                 yLabel: "Makes Purchase",
                 positiveLabel: "Purchases",
                 negativeLabel: "Browses Only",
-                predictionLabel: "Hour (24-hour):",
-                description: "predicting purchase likelihood based on what time customers visit the store",
-                xMin: 9,
-                xMax: 21,
+                predictionLabel: "Time:",
+                description: "predicting purchase likelihood based on the magic hour when customers visit",
+                xMin: 11,
+                xMax: 19,
                 xDefault: 15,
                 xStep: 1
             },
             dayweek: {
-                title: "Day of Week Patterns", 
+                title: "Weekly Rhythms", 
                 xLabel: "Day of Week",
                 yLabel: "Requests Delivery",
                 positiveLabel: "Delivery",
                 negativeLabel: "Pickup",
                 predictionLabel: "Day (1=Mon, 7=Sun):",
-                description: "predicting delivery requests based on which day of the week customers shop",
+                description: "predicting delivery requests based on weekly shopping rhythms and customer psychology",
                 xMin: 1,
                 xMax: 7,
                 xDefault: 4,
                 xStep: 1
             },
             groupsize: {
-                title: "Customer Group Size",
-                xLabel: "People in Shopping Group",
-                yLabel: "Buys Premium", 
-                positiveLabel: "Premium",
-                negativeLabel: "Budget",
-                predictionLabel: "Group size:",
-                description: "predicting premium purchases based on how many people shop together",
+                title: "Visit Journey",
+                xLabel: "Store Visits",
+                yLabel: "Makes Purchase", 
+                positiveLabel: "Purchases",
+                negativeLabel: "Still Browsing",
+                predictionLabel: "Visit number:",
+                description: "predicting purchase probability based on how many times customers have visited your store",
                 xMin: 1,
-                xMax: 6,
-                xDefault: 2,
+                xMax: 8,
+                xDefault: 3,
                 xStep: 1
             },
             touched: {
-                title: "Customer Engagement Level",
+                title: "Touch Factor",
                 xLabel: "Items Touched/Examined",
                 yLabel: "Makes Purchase",
                 positiveLabel: "Purchases", 
                 negativeLabel: "Leaves",
                 predictionLabel: "Items examined:",
-                description: "predicting purchases based on how many furniture pieces customers physically examine",
+                description: "predicting purchases through tactile engagement - the surprising power of physical interaction",
                 xMin: 0,
                 xMax: 12,
                 xDefault: 4,
-                xStep: 1
+                xStep: 2
             }
         };
         
@@ -936,11 +698,10 @@
         // Set canvas size with mobile responsiveness
         function resizeCanvas() {
             const container = canvas.parentElement;
-            const containerWidth = container.clientWidth - 40; // Account for padding (20px each side)
+            const containerWidth = container.clientWidth - 40;
             const isMobile = window.innerWidth <= 768;
             const isSmallMobile = window.innerWidth <= 480;
             
-            // Ensure canvas never exceeds container width
             const maxWidth = Math.min(containerWidth, isMobile ? 360 : 800);
             
             if (isSmallMobile) {
@@ -954,19 +715,116 @@
                 canvas.height = 500;
             }
             
-            // Set CSS dimensions to match canvas dimensions
             canvas.style.width = canvas.width + 'px';
             canvas.style.height = canvas.height + 'px';
             canvas.style.maxWidth = '100%';
             
-            // Redraw after resize
             if (data.length > 0) {
                 draw();
             }
         }
         
-        // Initial canvas setup
         resizeCanvas();
+        
+        function updateDiscoveryMessage() {
+            const scenario = scenarios[currentScenario];
+            const absSlope = Math.abs(slope);
+            const baseline = logisticFunction(0) * 100;
+            const slopeDirection = slope > 0 ? "increases" : slope < 0 ? "decreases" : "stays flat";
+            
+            let icon, message;
+            
+            const icons = ['🔍', '⚡', '🎯', '🚀', '💡', '🎉', '🤯', '🔥', '✨', '🎪'];
+            
+            if (Math.abs(slope) < 0.1) {
+                icon = '🤔';
+                const puzzleMessages = [
+                    `Hmm, ${scenario.xLabel.toLowerCase()} barely affects ${scenario.positiveLabel.toLowerCase()} rates - that's unexpected!`,
+                    `Plot twist! This factor isn't as important as we thought it would be...`,
+                    `Interesting... the curve is almost flat. Maybe this isn't the magic variable after all?`,
+                    `Wait, what? This relationship is weaker than my morning coffee! 😅`
+                ];
+                message = puzzleMessages[Math.floor(Math.random() * puzzleMessages.length)];
+            } else if (absSlope > 1.5) {
+                icon = '🤯';
+                const strongMessages = [
+                    `WHOA! This is a super strong relationship - ${scenario.xLabel.toLowerCase()} dramatically ${slopeDirection} success!`,
+                    `Holy data points! This curve is STEEP - we found a powerful predictor!`,
+                    `This is what I call a data goldmine! Look at that dramatic ${slopeDirection === 'increases' ? 'climb' : 'drop'}!`,
+                    `Mind = blown! 🧠💥 This factor has serious predictive power!`
+                ];
+                message = strongMessages[Math.floor(Math.random() * strongMessages.length)];
+            } else if (baseline > 80) {
+                icon = '🎉';
+                const highBaselineMessages = [
+                    `Sweet! High baseline rate means customers are already primed for ${scenario.positiveLabel.toLowerCase()}!`,
+                    `Excellent news - even average conditions lead to ${baseline.toFixed(0)}% ${scenario.positiveLabel.toLowerCase()} rate!`,
+                    `This is what success looks like - most customers are already doing what we want!`
+                ];
+                message = highBaselineMessages[Math.floor(Math.random() * highBaselineMessages.length)];
+            } else if (baseline < 20) {
+                icon = '🎯';
+                const lowBaselineMessages = [
+                    `Challenge accepted! Low baseline means huge opportunity to optimize ${scenario.xLabel.toLowerCase()}!`,
+                    `Ooh, this is where the magic happens - lots of room for improvement!`,
+                    `Perfect! Low baseline gives us space to work with - let's find the sweet spots!`
+                ];
+                message = lowBaselineMessages[Math.floor(Math.random() * lowBaselineMessages.length)];
+            } else if (noiseLevel > 1.5) {
+                icon = '🎪';
+                const noisyMessages = [
+                    `Wild data circus! 🎪 High noise means our predictions are less certain, but patterns still emerge!`,
+                    `Messy data = real data! This noise is totally normal in the wild world of retail!`,
+                    `Embrace the chaos! Even with all this variability, we can still see the underlying trend!`
+                ];
+                message = noisyMessages[Math.floor(Math.random() * noisyMessages.length)];
+            } else if (noiseLevel < 0.3) {
+                icon = '✨';
+                const cleanMessages = [
+                    `Pristine data alert! ✨ This clean pattern makes predictions super reliable!`,
+                    `Beautiful! This clean curve means we can trust our predictions with confidence!`,
+                    `Chef's kiss to this data quality! 👨‍🍳💋 Clear patterns = reliable insights!`
+                ];
+                message = cleanMessages[Math.floor(Math.random() * cleanMessages.length)];
+            } else {
+                const scenarioMessages = {
+                    time: [
+                        `Business hours magic! Watch how purchase probability ${slopeDirection} from 11am to 7pm!`,
+                        `Chronobiology in action! Customer buying mood literally changes throughout the business day!`,
+                        `Time-based patterns are retail gold - some hours are just magical for sales! ⏰✨`,
+                        `Peak hours vs. quiet times - the data reveals when customers are most ready to buy!`
+                    ],
+                    dayweek: [
+                        `Days of the week have personality! ${slope > 0 ? 'Weekend warriors' : 'Weekday winners'} dominate here!`,
+                        `Weekly rhythms reveal customer psychology - fascinating behavioral patterns!`,
+                        `Calendar psychology is real! People's preferences literally shift by day of the week! 📅`
+                    ],
+                    groupsize: [
+                        `Customer journey magic! ${slope > 0 ? 'Each visit builds commitment' : 'Sometimes first impressions win'}!`,
+                        `Visit patterns reveal purchase psychology - patience vs. impulse buying!`,
+                        `The power of return customers! Multiple touchpoints ${slope > 0 ? 'build trust' : 'can create hesitation'}! 🔄`,
+                        `Customer loyalty metrics in action - tracking the path from browser to buyer!`
+                    ],
+                    touched: [
+                        `Tactile engagement predicts commitment! Touch = emotional connection = sales!`,
+                        `The more they touch, the more they ${slope > 0 ? 'buy' : 'browse'}! Physical interaction matters!`,
+                        `Hands-on exploration reveals customer intent - this is behavioral economics in action! 👆`
+                    ]
+                };
+                
+                const currentMessages = scenarioMessages[currentScenario];
+                message = currentMessages[Math.floor(Math.random() * currentMessages.length)];
+                icon = icons[Math.floor(Math.random() * icons.length)];
+            }
+            
+            const iconEl = document.getElementById('discoveryIcon');
+            const textEl = document.getElementById('discoveryText');
+            
+            if (iconEl && textEl) {
+                iconEl.textContent = icon;
+                textEl.textContent = message;
+            }
+        }
         
         function setScenarioFromDropdown(scenarioKey) {
             setScenario(scenarioKey);
@@ -975,7 +833,6 @@
         function setScenario(scenarioKey) {
             currentScenario = scenarioKey;
             
-            // Update active button
             document.querySelectorAll('.scenario-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
@@ -984,33 +841,27 @@
                 activeBtn.classList.add('active');
             }
             
-            // Update dropdown selection
             const dropdown = document.getElementById('scenarioDropdown');
             if (dropdown) {
                 dropdown.value = scenarioKey;
             }
             
-            // Update all scenario-specific content
             updateScenarioLabels();
             updateDynamicExplanation();
             updatePrediction();
             
-            // Generate new data for the new scenario context and redraw
+            const scenario = scenarios[currentScenario];
+            const iconEl = document.getElementById('discoveryIcon');
+            const textEl = document.getElementById('discoveryText');
+            
+            if (iconEl && textEl) {
+                iconEl.textContent = '🔄';
+                textEl.textContent = `Switching gears to ${scenario.title.toLowerCase()}... let's explore this angle!`;
+                setTimeout(updateDiscoveryMessage, 800);
+            }
+            
             generateData();
             draw();
-        }
-        
-        // Add keyboard support for scenario buttons
-        function setupScenarioKeyboardSupport() {
-            document.querySelectorAll('.scenario-btn').forEach(btn => {
-                btn.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        const scenario = this.getAttribute('data-scenario');
-                        setScenario(scenario);
-                    }
-                });
-            });
         }
         
         function updateScenarioLabels() {
@@ -1027,7 +878,6 @@
             if (legendPositiveHistEl) legendPositiveHistEl.textContent = scenario.positiveLabel + ' Cases';
             if (predictionLabelEl) predictionLabelEl.textContent = scenario.predictionLabel;
             
-            // Update prediction input range and default value
             if (predictionInputEl) {
                 predictionInputEl.min = scenario.xMin;
                 predictionInputEl.max = scenario.xMax;
@@ -1047,6 +897,7 @@
                 interceptSlider.addEventListener('input', function() {
                     intercept = parseFloat(this.value);
                     updateAllDisplays();
+                    setTimeout(updateDiscoveryMessage, 150);
                     draw();
                 });
             }
@@ -1055,6 +906,7 @@
                 slopeSlider.addEventListener('input', function() {
                     slope = parseFloat(this.value);
                     updateAllDisplays();
+                    setTimeout(updateDiscoveryMessage, 200);
                     draw();
                 });
             }
@@ -1077,6 +929,7 @@
                     noiseLevel = parseFloat(this.value);
                     updateAllDisplays();
                     generateData();
+                    setTimeout(updateDiscoveryMessage, 100);
                     draw();
                 });
             }
@@ -1095,7 +948,7 @@
             updateDynamicExplanation();
             updateInsights();
             updatePrediction();
-            updateTutorialTip();
+            updateDiscoveryMessage();
         }
         
         function updateInterceptDisplay() {
@@ -1170,26 +1023,34 @@
         
         function updateDynamicExplanation() {
             const scenario = scenarios[currentScenario];
-            const slopeDirection = slope > 0 ? "increases" : slope < 0 ? "decreases" : "doesn't change";
-            const strength = Math.abs(slope) > 1 ? "dramatically" : Math.abs(slope) > 0.5 ? "significantly" : "slightly";
+            const slopeDirection = slope > 0 ? "increases" : slope < 0 ? "decreases" : "doesn't budge";
+            const strength = Math.abs(slope) > 1.5 ? "dramatically" : Math.abs(slope) > 1 ? "significantly" : Math.abs(slope) > 0.5 ? "moderately" : "slightly";
             const baseline = logisticFunction(0) * 100;
             
-            let explanation = `This chart shows ${scenario.description}. `;
+            let explanation = `This chart reveals ${scenario.description}. `;
             
             if (Math.abs(slope) < 0.1) {
-                explanation += `Currently, the ${scenario.xLabel.toLowerCase()} has <span class="highlight">almost no effect</span> on the outcome. `;
+                explanation += `Plot twist! The ${scenario.xLabel.toLowerCase()} has <span class="highlight">almost zero effect</span> on outcomes - sometimes the data surprises us! `;
             } else {
-                explanation += `As ${scenario.xLabel.toLowerCase()} increases, the probability of "${scenario.positiveLabel}" <span class="highlight">${slopeDirection} ${strength}</span>. `;
+                const enthusiasm = Math.abs(slope) > 1 ? "Look at this! " : "";
+                explanation += `${enthusiasm}As ${scenario.xLabel.toLowerCase()} increases, the probability of "${scenario.positiveLabel}" <span class="highlight">${slopeDirection} ${strength}</span>. `;
             }
             
-            explanation += `When factors are at average levels, there's a <span class="highlight">${baseline.toFixed(0)}% chance</span> of a positive outcome. `;
+            explanation += `Starting from average conditions, we're looking at a <span class="highlight">${baseline.toFixed(0)}% baseline chance</span>. `;
             
-            if (noiseLevel > 1) {
-                explanation += `The data shows <span class="highlight">high variability</span>, meaning predictions are less certain.`;
+            if (noiseLevel > 1.5) {
+                explanation += `The data shows <span class="highlight">real-world messiness</span> - predictions are uncertain, but hey, that's retail life! `;
             } else if (noiseLevel < 0.5) {
-                explanation += `The data shows a <span class="highlight">clear pattern</span>, making predictions more reliable.`;
+                explanation += `This data is <span class="highlight">beautifully clean</span> - our predictions are rock solid! `;
             } else {
-                explanation += `The data shows <span class="highlight">moderate variability</span>, which is typical in real-world retail scenarios.`;
+                explanation += `We've got <span class="highlight">typical variability</span> here - exactly what you'd expect in the wild world of customer behavior. `;
+            }
+            
+            const accuracy = calculateAccuracy();
+            if (accuracy > 85) {
+                explanation += `<strong>Bonus insight:</strong> This model is crushing it with ${accuracy.toFixed(0)}% accuracy! 🎯`;
+            } else if (accuracy < 60) {
+                explanation += `<strong>Reality check:</strong> Only ${accuracy.toFixed(0)}% accuracy - there's more to the story than just this factor.`;
             }
             
             const explanationEl = document.getElementById('dynamicExplanation');
@@ -1200,29 +1061,46 @@
         
         function updateInsights() {
             const accuracy = calculateAccuracy();
+            const scenario = scenarios[currentScenario];
             
             let insights = [];
             
-            if (Math.abs(slope) > 1.2) {
-                insights.push("• Strong relationship - this factor is highly predictive");
-            } else if (Math.abs(slope) < 0.3) {
-                insights.push("• Weak relationship - this factor has little predictive power");
+            if (Math.abs(slope) > 1.5) {
+                insights.push("🚀 JACKPOT! This factor is a powerhouse predictor!");
+            } else if (Math.abs(slope) > 1) {
+                insights.push("⭐ Strong signal detected - this factor really matters!");
+            } else if (Math.abs(slope) > 0.5) {
+                insights.push("📊 Decent relationship - this factor has some predictive juice!");
+            } else if (Math.abs(slope) < 0.1) {
+                insights.push("🤷 Mystery solved: this factor barely moves the needle!");
             } else {
-                insights.push("• Moderate relationship - this factor is somewhat predictive");
+                insights.push("📈 Weak but measurable - every little insight counts!");
             }
             
-            if (accuracy > 80) {
-                insights.push("• High accuracy - model predictions are reliable");
+            if (accuracy > 85) {
+                insights.push("🎯 Model accuracy is through the roof - we nailed it!");
+            } else if (accuracy > 75) {
+                insights.push("✅ Solid accuracy - this model knows what it's doing!");
             } else if (accuracy > 60) {
-                insights.push("• Moderate accuracy - model is reasonably reliable");
+                insights.push("⚖️ Decent accuracy - room for improvement but useful!");
             } else {
-                insights.push("• Low accuracy - predictions are uncertain");
+                insights.push("🎲 Low accuracy alert - life is complex, predictions are hard!");
             }
             
-            if (sampleSize > 300) {
-                insights.push("• Large sample size increases confidence");
+            if (sampleSize > 400) {
+                insights.push("📈 Massive dataset = rock-solid confidence levels!");
+            } else if (sampleSize > 200) {
+                insights.push("👍 Good sample size - our findings are trustworthy!");
             } else if (sampleSize < 100) {
-                insights.push("• Small sample size - results less certain");
+                insights.push("⚠️ Small sample - take these results with a grain of salt!");
+            }
+            
+            if (currentScenario === 'time' && Math.abs(slope) > 0.5) {
+                insights.push(slope > 0 ? "⏰ Afternoon and evening customers are your gold mine - staff up for closing time!" : "🌅 Morning shoppers need different attention - optimize your 11am-noon strategy!");
+            } else if (currentScenario === 'groupsize' && Math.abs(slope) > 0.5) {
+                insights.push(slope > 0 ? "🔄 Return customers are gold! Focus on nurturing repeat visitors!" : "⚡ First-visit conversions matter most - optimize that initial experience!");
+            } else if (currentScenario === 'touched' && Math.abs(slope) > 0.5) {
+                insights.push("👋 Encourage touching! Tactile engagement drives behavior!");
             }
             
             const insightsEl = document.getElementById('insightsList');
@@ -1253,26 +1131,10 @@
                 `<strong>${probability.toFixed(0)}% chance</strong><br><small>${interpretation} to be "${scenario.positiveLabel}"</small>`;
         }
         
-        function updateTutorialTip() {
-            const tips = [
-                "See how time of day affects purchase rates - afternoon shoppers often convert better!",
-                "Try different scenarios to see how simple metrics impact sales!",
-                "Drag the 'Relationship Strength' slider to see how it changes the curve steepness!",
-                "Use the prediction tool to test different customer scenarios!"
-            ];
-            
-            let tipIndex = Math.floor(Math.random() * tips.length);
-            
-            const tutorialEl = document.getElementById('tutorialText');
-            if (tutorialEl) {
-                tutorialEl.textContent = tips[tipIndex];
-            }
-        }
-        
         function generateData() {
             data = [];
             for (let i = 0; i < sampleSize; i++) {
-                const x = (Math.random() - 0.5) * 8; // x from -4 to 4 (internal scale)
+                const x = (Math.random() - 0.5) * 8;
                 const logit = intercept + slope * x + (Math.random() - 0.5) * noiseLevel * 2;
                 const probability = 1 / (1 + Math.exp(-logit));
                 const y = Math.random() < probability ? 1 : 0;
@@ -1281,8 +1143,45 @@
         }
         
         function generateNewData() {
+            // Randomize all the parameters for maximum chaos!
+            intercept = (Math.random() - 0.5) * 4; // -2 to 2
+            slope = (Math.random() - 0.5) * 4; // -2 to 2  
+            sampleSize = Math.floor(Math.random() * 450) + 50; // 50 to 500
+            noiseLevel = Math.random() * 1.9 + 0.1; // 0.1 to 2
+            
+            // Update all the sliders to reflect the new random values
+            const interceptSlider = document.getElementById('interceptSlider');
+            const slopeSlider = document.getElementById('slopeSlider');
+            const sampleSlider = document.getElementById('sampleSlider');
+            const noiseSlider = document.getElementById('noiseSlider');
+            
+            if (interceptSlider) interceptSlider.value = intercept;
+            if (slopeSlider) slopeSlider.value = slope;
+            if (sampleSlider) sampleSlider.value = sampleSize;
+            if (noiseSlider) noiseSlider.value = noiseLevel;
+            
+            // Generate fresh data with the new random parameters
             generateData();
             updateAllDisplays();
+            
+            // Add some excitement to the discovery message
+            const iconEl = document.getElementById('discoveryIcon');
+            const textEl = document.getElementById('discoveryText');
+            
+            if (iconEl && textEl) {
+                iconEl.textContent = '🎲';
+                const chaosMessages = [
+                    'Complete chaos mode activated! New data, new parameters, new discoveries ahead...',
+                    'Rolling ALL the dice! Fresh data, random settings, maximum experimentation!',
+                    'Everything randomized! Let\'s see what wild patterns emerge from this chaos!',
+                    'Total parameter mayhem! Buckle up for some surprising discoveries!'
+                ];
+                textEl.textContent = chaosMessages[Math.floor(Math.random() * chaosMessages.length)];
+                
+                // Update to actual discovery after a brief moment
+                setTimeout(updateDiscoveryMessage, 1200);
+            }
+            
             draw();
         }
         
@@ -1303,56 +1202,54 @@
             const width = canvas.width;
             const height = canvas.height;
             const isMobile = window.innerWidth <= 768;
-            const margin = isMobile ? 40 : 60;
-            const plotWidth = width - 2 * margin;
-            const plotHeight = height - 2 * margin;
+            const leftMargin = isMobile ? 65 : 90;  // Increased left margin for labels
+            const rightMargin = isMobile ? 40 : 60;
+            const topMargin = isMobile ? 40 : 60;
+            const bottomMargin = isMobile ? 40 : 60;
+            const plotWidth = width - leftMargin - rightMargin;
+            const plotHeight = height - topMargin - bottomMargin;
             
-            // Get scenario-specific ranges for display
             const scenario = scenarios[currentScenario];
             const xMin = scenario.xMin;
             const xMax = scenario.xMax;
             const yMin = -0.1, yMax = 1.1;
             
-            // Clear canvas
             ctx.clearRect(0, 0, width, height);
             
             function xToCanvas(x) {
-                return margin + ((x - xMin) / (xMax - xMin)) * plotWidth;
+                return leftMargin + ((x - xMin) / (xMax - xMin)) * plotWidth;
             }
             
             function yToCanvas(y) {
-                return height - margin - ((y - yMin) / (yMax - yMin)) * plotHeight;
+                return height - bottomMargin - ((y - yMin) / (yMax - yMin)) * plotHeight;
             }
             
-            // Draw background
             ctx.fillStyle = '#ffffff';
-            ctx.fillRect(margin, margin, plotWidth, plotHeight);
+            ctx.fillRect(leftMargin, topMargin, plotWidth, plotHeight);
             
-            // Draw grid
             ctx.strokeStyle = '#f0f0f0';
             ctx.lineWidth = 1;
             
-            // Vertical grid lines
             const xStep = scenario.xStep;
             for (let x = xMin; x <= xMax; x += xStep) {
                 const canvasX = xToCanvas(x);
                 ctx.beginPath();
-                ctx.moveTo(canvasX, margin);
-                ctx.lineTo(canvasX, height - margin);
+                ctx.moveTo(canvasX, topMargin);
+                ctx.lineTo(canvasX, height - bottomMargin);
                 ctx.stroke();
             }
             
-            // Horizontal grid lines
             for (let y = 0; y <= 1; y += 0.25) {
                 const canvasY = yToCanvas(y);
                 ctx.beginPath();
-                ctx.moveTo(margin, canvasY);
-                ctx.lineTo(width - margin, canvasY);
+                ctx.moveTo(leftMargin, canvasY);
+                ctx.lineTo(width - rightMargin, canvasY);
                 ctx.stroke();
             }
             
-            // Draw histogram background
-            const bins = Math.min(30, xMax - xMin + 1);
+            // Calculate appropriate number of bins - ensure it's always a valid integer
+            let bins = Math.floor(Math.min(30, xMax - xMin + 1));
+            bins = Math.max(bins, 5); // Ensure at least 5 bins for meaningful display
             const binWidth = (xMax - xMin) / bins;
             const binCounts = { 0: new Array(bins).fill(0), 1: new Array(bins).fill(0) };
             
@@ -1364,7 +1261,6 @@
                 }
             }
             
-            // Draw histogram bars from the middle (0.5 line)
             const maxCount = Math.max(...binCounts[0], ...binCounts[1]);
             const histScale = 0.25;
             const middleY = yToCanvas(0.5);
@@ -1377,14 +1273,12 @@
                     const canvasX2 = xToCanvas(x2);
                     const barWidth = canvasX2 - canvasX1;
                     
-                    // Draw bars for y=0 (below middle line)
                     if (binCounts[0][i] > 0) {
                         const barHeight = (binCounts[0][i] / maxCount) * histScale * plotHeight;
                         ctx.fillStyle = 'rgba(220, 53, 69, 0.5)';
                         ctx.fillRect(canvasX1, middleY, barWidth, barHeight);
                     }
                     
-                    // Draw bars for y=1 (above middle line)
                     if (binCounts[1][i] > 0) {
                         const barHeight = (binCounts[1][i] / maxCount) * histScale * plotHeight;
                         ctx.fillStyle = 'rgba(40, 167, 69, 0.5)';
@@ -1393,7 +1287,6 @@
                 }
             }
             
-            // Draw confidence interval
             ctx.fillStyle = 'rgba(0, 123, 255, 0.15)';
             ctx.beginPath();
             const step = (xMax - xMin) / 100;
@@ -1419,7 +1312,6 @@
             ctx.closePath();
             ctx.fill();
             
-            // Draw logistic curve
             ctx.strokeStyle = '#007bff';
             ctx.lineWidth = isMobile ? 3 : 4;
             ctx.beginPath();
@@ -1437,7 +1329,6 @@
             }
             ctx.stroke();
             
-            // Draw data points with jitter
             const pointRadius = isMobile ? 3 : 4;
             for (let point of data) {
                 const displayX = convertToDisplayValue(point.x);
@@ -1454,40 +1345,46 @@
                 ctx.globalAlpha = 1;
             }
             
-            // Draw reference line at p = 0.5
             ctx.strokeStyle = '#666';
             ctx.lineWidth = isMobile ? 1 : 2;
             ctx.setLineDash([8, 4]);
             ctx.beginPath();
-            ctx.moveTo(margin, yToCanvas(0.5));
-            ctx.lineTo(width - margin, yToCanvas(0.5));
+            ctx.moveTo(leftMargin, yToCanvas(0.5));
+            ctx.lineTo(width - rightMargin, yToCanvas(0.5));
             ctx.stroke();
             ctx.setLineDash([]);
             
-            // Draw axes
             ctx.strokeStyle = '#333';
             ctx.lineWidth = isMobile ? 1 : 2;
             
-            // X-axis
             ctx.beginPath();
-            ctx.moveTo(margin, height - margin);
-            ctx.lineTo(width - margin, height - margin);
+            ctx.moveTo(leftMargin, height - bottomMargin);
+            ctx.lineTo(width - rightMargin, height - bottomMargin);
             ctx.stroke();
             
-            // Y-axis  
             ctx.beginPath();
-            ctx.moveTo(margin, margin);
-            ctx.lineTo(margin, height - margin);
+            ctx.moveTo(leftMargin, topMargin);
+            ctx.lineTo(leftMargin, height - bottomMargin);
             ctx.stroke();
             
-            // Draw labels
             ctx.fillStyle = '#333';
             ctx.font = isMobile ? '10px Inter' : '14px Inter';
             ctx.textAlign = 'center';
             
-            // X-axis labels (reduce frequency on mobile)
-            const labelStep = isMobile && (xMax - xMin) > 10 ? xStep * 2 : xStep;
+            let labelStep = xStep;
+            if (isMobile) {
+                if (currentScenario === 'time') {
+                    labelStep = 1; // Show hourly labels on mobile for time
+                } else if ((xMax - xMin) > 5) {
+                    labelStep = xStep * 2;
+                }
+            }
             for (let x = xMin; x <= xMax; x += labelStep) {
+                // For time scenario on mobile, only show labels at integer hours
+                if (currentScenario === 'time' && isMobile && x % 1 !== 0) {
+                    continue;
+                }
+                
                 const canvasX = xToCanvas(x);
                 let label = x.toString();
                 if (currentScenario === 'time') {
@@ -1496,34 +1393,26 @@
                     const days = ['', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
                     label = days[x] || x.toString();
                 } else if (currentScenario === 'groupsize') {
-                    label = isMobile ? x.toString() : x + (x === 1 ? ' person' : ' people');
+                    label = isMobile ? x.toString() : x + (x === 1 ? ' visit' : ' visits');
                 } else if (currentScenario === 'touched') {
                     label = isMobile ? x.toString() : x + ' items';
                 }
-                ctx.fillText(label, canvasX, height - margin + (isMobile ? 18 : 25));
+                ctx.fillText(label, canvasX, height - bottomMargin + (isMobile ? 18 : 25));
             }
             
-            // Y-axis labels
+            // Draw Y-axis labels with outcome names instead of percentages
             ctx.textAlign = 'right';
-            ctx.fillText('0%', margin - (isMobile ? 5 : 10), yToCanvas(0) + 3);
-            if (!isMobile) {
-                ctx.fillText('25%', margin - 10, yToCanvas(0.25) + 3);
-                ctx.fillText('75%', margin - 10, yToCanvas(0.75) + 3);
-            }
-            ctx.fillText('50%', margin - (isMobile ? 5 : 10), yToCanvas(0.5) + 3);
-            ctx.fillText('100%', margin - (isMobile ? 5 : 10), yToCanvas(1) + 3);
+            ctx.fillText(scenario.negativeLabel, leftMargin - (isMobile ? 8 : 10), yToCanvas(0) + 3);
+            ctx.fillText(scenario.positiveLabel, leftMargin - (isMobile ? 8 : 10), yToCanvas(1) + 3);
             
-            // Draw axis titles
             ctx.font = isMobile ? '12px Inter' : '16px Inter';
             ctx.fillStyle = '#444';
             ctx.textAlign = 'center';
             
-            // X-axis title
             ctx.fillText(scenario.xLabel, width / 2, height - (isMobile ? 2 : 5));
             
-            // Y-axis title (shorter on mobile)
             ctx.save();
-            ctx.translate(isMobile ? 12 : 15, height / 2);
+            ctx.translate(isMobile ? 12 : 20, height / 2);
             ctx.rotate(-Math.PI / 2);
             const yTitle = isMobile ? scenario.positiveLabel : `Probability of ${scenario.positiveLabel}`;
             ctx.fillText(yTitle, 0, 0);
@@ -1535,11 +1424,9 @@
             try {
                 generateData();
                 setupEventListeners();
-                setupScenarioKeyboardSupport();
                 updateScenarioLabels();
                 updateAllDisplays();
                 
-                // Initialize dropdown with current scenario
                 const dropdown = document.getElementById('scenarioDropdown');
                 if (dropdown) {
                     dropdown.value = currentScenario;
@@ -1547,12 +1434,10 @@
                 
                 draw();
                 
-                // Handle window resize for mobile
                 window.addEventListener('resize', function() {
                     resizeCanvas();
                 });
                 
-                // Prevent zoom on double tap for iOS
                 let lastTouchEnd = 0;
                 document.addEventListener('touchend', function (event) {
                     const now = (new Date()).getTime();
@@ -1567,16 +1452,13 @@
             }
         });
         
-        // Fallback initialization if DOMContentLoaded already fired
         if (document.readyState !== 'loading') {
             try {
                 generateData();
                 setupEventListeners();
-                setupScenarioKeyboardSupport();
                 updateScenarioLabels();
                 updateAllDisplays();
                 
-                // Initialize dropdown with current scenario
                 const dropdown = document.getElementById('scenarioDropdown');
                 if (dropdown) {
                     dropdown.value = currentScenario;
@@ -1584,12 +1466,10 @@
                 
                 draw();
                 
-                // Handle window resize for mobile
                 window.addEventListener('resize', function() {
                     resizeCanvas();
                 });
                 
-                // Prevent zoom on double tap for iOS
                 let lastTouchEnd = 0;
                 document.addEventListener('touchend', function (event) {
                     const now = (new Date()).getTime();
